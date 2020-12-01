@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="HelloWorld" basedir="" default="ALL">
+    <target name="ALL" depends="CLEAN, GETGITHUB, COMPILE, INTEGRATE, RUN, TEST, DOCUMENT, JAR">
+        <echo>RUN</echo>
+    </target>
+    <target name="CLEAN">
+        <echo>CLEAN</echo>
+    </target>
+    <target name="GETGITHUB">
+        <echo>GETGITHUB</echo>
+    </target>
+    <target name="COMPILE">
+        <echo>COMPILE</echo>
+    </target>
+    <target name="INTEGRATE">
+        <echo>INTEGRATE</echo>
+    </target>
+    <target name="RUN">
+        <echo>RUN</echo>
+    </target>
+    <target name="TEST">
+        <echo>TEST</echo>
+    </target>
+    <target name="DOCUMENT">
+        <echo>DOCUMENT</echo>
+    </target>
+    <target name="JAR">
+        <echo>JAR</echo>
+    </target>
+
+
+</project>
