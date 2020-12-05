@@ -1,32 +1,116 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="HelloWorld" basedir="" default="ALL">
-    <target name="ALL" depends="CLEAN, GETGITHUB, COMPILE, INTEGRATE, RUN, TEST, DOCUMENT, JAR">
-        <echo>RUN</echo>
-    </target>
-    <target name="CLEAN">
-        <echo>CLEAN</echo>
-    </target>
-    <target name="GETGITHUB">
-        <echo>GETGITHUB</echo>
-    </target>
-    <target name="COMPILE">
-        <echo>COMPILE</echo>
-    </target>
-    <target name="INTEGRATE">
-        <echo>INTEGRATE</echo>
-    </target>
-    <target name="RUN">
-        <echo>RUN</echo>
-    </target>
-    <target name="TEST">
-        <echo>TEST</echo>
-    </target>
-    <target name="DOCUMENT">
-        <echo>DOCUMENT</echo>
-    </target>
-    <target name="JAR">
-        <echo>JAR</echo>
+
+<!--
+author: Oliver Mohn SWT-project: Fluffy Vacation
+-->
+<project name="Fluffy_Vacation" basedir="" default="ALL">
+
+    <property name="version" value="0.1"/>
+    <property name="srcDir" value="./src"/>
+    <property name="buildDir" value="build"/>
+    <property name="distDir" value="${ant.project.name}-${version}"/>
+    <property name="classesDir" value="${buildDir}/classes"/>
+    <property name="jarDir" value="${buildDir}/jar"/>
+    <property name="jarFile" value="${jarDir}/${ant.project.name}.jar"/>
+    <property name="mainClass" value="controller.HelloWorld"/>
+    <property name="libDir" value="lib"/>
+    <property name="testsDir" value="tests"/>
+    <property name="docDir" value="docs"/>
+    <property name="workingDir" value="mybuild"/>
+
+    <path id="classpath">
+        <fileset dir="${libDir}">
+                <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="application" location="${jarFile}"/>
+
+    <target name="ALL" depends="CLEAN, GET, JAVADOC, TEST, RUN" description="starts other targets">
+        <echo>Target All starts...</echo>
     </target>
 
+    <target name="CLEAN" depends="CLEAN-WORKING" description="cleans drivespace">
+
+        <echo>Target CLEAN started...</echo>
+
+        <delete dir="${buildDir}"/>
+        <delete dir="${distDir}"/>
+    </target>
+
+    <target name="CLEAN-WORKING" description="cleans working directory">
+
+        <echo>Target CLEAN-WORKING started...</echo>
+
+        <delete dir="${workingDir}"/>
+    </target>
+
+    <target name="GET" description="gets sourcefiles to working directory">
+
+        <echo>Target GET started...</echo>
+
+        <mkdir dir="${workingDir}/src"/>
+        <copy todir="${workingDir}/src">
+            <fileset dir="${srcDir}"/>
+        </copy>
+    </target>
+
+    <target name="COMPILE" depends="GET, TEST" description="compiles class files to buildpath">
+
+        <echo>Target COMPILE started...</echo>
+
+        <mkdir dir="${classesDir}"/>
+        <javac srcdir="${srcDir}" destdir="${classesDir}" classpathref="classpath"/>
+    </target>
+
+    <target name="RUN" depends="JAR" description="executes jar">
+
+        <echo>Target RUN started...</echo>
+
+        <java fork="true" classname="${mainClass}">
+            <classpath>
+                <path refid="classpath"/>
+                <path refid="application"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="TEST" description="performs JUnit4 Test">
+
+        <echo>Target TEST started...</echo>
+
+        <junit printsummary="yes">
+            <classpath>
+                <path refid="classpath"/>
+                <path refid="application"/>
+            </classpath>
+
+            <batchtest fork="yes">
+                <fileset dir="${srcDir}" includes="**/*Test.java"/>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="JAVADOC" description="builds a Javadoc Documentation">
+
+        <echo>Target JAVADOC started...</echo>
+
+        <mkdir dir="${buildDir}/${docDir}"/>
+        <javadoc destdir="${buildDir}/${docDir}">
+            <fileset dir="${srcDir}/models" />
+        </javadoc>
+    </target>
+
+    <target name="JAR" depends="COMPILE" description="builds a self-executing Jar-File">
+
+        <echo>Target JAR started...</echo>
+
+        <mkdir dir="${jarDir}"/>
+        <jar destfile="${jarFile}" basedir="${classesDir}">
+            <manifest>
+                <attribute name="Main-Class" value="${mainClass}"/>
+            </manifest>
+        </jar>
+    </target>
 
 </project>
