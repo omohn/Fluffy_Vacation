@@ -1,6 +1,6 @@
 package controller;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 
 /**
@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class HelloWorld {
-    static Logger logger = Logger.getLogger(HelloWorld.class);
+//    static Logger logger = Logger.getLogger(HelloWorld.class);
 
     /**
      * Main Methode
@@ -18,6 +18,6 @@ public class HelloWorld {
     public static void main(String[] args) {
         System.out.println("Hello Ant-World!");
 
-        logger.info("Hello Ant-World!");
+//        logger.info("Hello Ant-World!");
     }
 }
